@@ -1,10 +1,10 @@
 const currentDisplay=document.querySelector(".current-operand");
 const previousDisplay=document.querySelector(".previous-operand");
 const numberBtns=document.querySelectorAll(".number");
-const operationBtns=document.querySelectorAll(".operation");
+const operationBtns=document.querySelectorAll(".operator");
 const equalsBtn=document.querySelector(".equals");
 const clearBtn=document.querySelector(".clear");
-const themeBtn=document.querySelector(".themeBtn");
+const themeBtn=document.querySelector("#themeBtn");
 const backspaceBtn=document.querySelector(".backspace");
 
 let currentOperand='0';  // number currently being typed
@@ -59,8 +59,8 @@ function chooseOperation(op){
 
 function calculate(){
     let result;
-    const prev=parsefloat(previousOperand);
-    const current=parsefloat(currentOperand);
+    const prev=parseFloat(previousOperand);
+    const current=parseFloat(currentOperand);
     if(isNaN(prev) || isNaN(current))
         return;
     switch(operation)
@@ -175,4 +175,4 @@ function toggleTheme() {
     }
 }
 themeBtn.addEventListener('click', toggleTheme);
-document.body.classList.add('light'); // start in light mode
+document.body.classList.add('light'); 
