@@ -24,8 +24,155 @@ function appendNumber(number)
 {
     if(waitingForNewOperand)
     {
-        currentOperand-number;
+        currentOperand=number;
         waitingForNewOperand=false;
     }
-    
+    else
+    {
+        if(number === '.' && currentOperand.includes('.'))
+            return;
+        if(currentOperand === '0' && number !=='.')
+        {
+            currentOperand=number;
+        }
+        else
+        {
+            currentOperand+=number;
+        }
+    }
+    updateDisplay();
 }
+
+//Choosing an operator 
+function chooseOperation(op){
+    if(currentOperand=== '')
+        return;
+    if(previousOperand !== '')
+    {
+        calculate();
+    }
+    operation=op;
+    previousOperand=currentOperand;
+    currentOperand='';
+    updateDisplay();
+}
+
+function calculate(){
+    let result;
+    const prev=parsefloat(previousOperand);
+    const current=parsefloat(currentOperand);
+    if(isNaN(prev) || isNaN(current))
+        return;
+    switch(operation)
+    {
+        case '+':
+            result=prev+current;
+            break;
+        case '-':
+            result=prev-current;
+            break;
+        case '*':
+            result=prev*current;
+            break;
+        case '/':
+            if(current === 0)
+            {
+                alert("Cannot divide by zero");
+                return;
+            }
+            result=prev/current;
+            break;
+        default:
+            return;
+    }
+    currentOperand=result.toString();
+    operation=null;
+    previousOperand='';
+    waitingForNewOperand=true;
+    updateDisplay();
+}
+
+//clear and backspace
+function clear()
+{
+    currentOperand='0';
+    previousOperand='';
+    operation=null;
+    waitingForNewOperand=false;
+    updateDisplay();
+}
+
+function backspace()
+{
+    if(waitingForNewOperand)
+        return;
+    if(currentOperand.length === 1 || (currentOperand.length === 2 && currentOperand.startsWith('-')))
+    {
+        currentOperand='0';
+    }
+    else
+    {
+        currentOperand=currentOperand.slice(0,-1);
+    }
+    updateDisplay();
+}
+
+//Event Listeners
+numberBtns.forEach(btn => {
+    btn.addEventListener('click',() => {
+        appendNumber(btn.textContent);
+    });
+})
+operationBtns.forEach(btn => {
+    btn.addEventListener('click',() => {
+        chooseOperation(btn.textContent);
+    });
+})
+equalsBtn.addEventListener('click',() => {
+    calculate();
+});
+clearBtn.addEventListener('click',() => {
+    clear();
+});
+backspaceBtn.addEventListener('click',() => {
+    backspace();
+});
+
+//keyboard support
+document.addEventListener('keydown', (e) => {
+    if(e.key >= '0' && e.key <= '9')
+    {
+        appendNumber(e.key);
+    }
+    else if(e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/')
+    {
+        chooseOperation(e.key);
+    }
+    else if(e.key === '=' || e.key === 'Enter')
+    {
+        calculate();
+    }
+    else if(e.key === 'Escape')
+    {
+        clear();
+    }
+    else if(e.key === 'Backspace')
+    {
+        backspace();
+    }
+});
+
+//dark/light theme toggle
+function toggleTheme() {
+    if (document.body.classList.contains('light')) {
+        document.body.classList.remove('light');
+        document.body.classList.add('dark');
+        themeBtn.textContent = '☀️ Light';
+    } else {
+        document.body.classList.remove('dark');
+        document.body.classList.add('light');
+        themeBtn.textContent = '🌙 Dark';
+    }
+}
+themeBtn.addEventListener('click', toggleTheme);
+document.body.classList.add('light'); // start in light mode
