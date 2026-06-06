@@ -145,6 +145,9 @@ backspaceBtn.addEventListener('click',() => {
     backspace();
 });
 
+if (signBtn) {
+    signBtn.addEventListener('click', toggleSign);
+}
 
 //keyboard support
 document.addEventListener('keydown', (e) => {
