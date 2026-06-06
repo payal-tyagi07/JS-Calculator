@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>CALCULATOR</h1>
+    <h1 class="calculator-heading">CALCULATOR</h1>
     <div class="calculator">
         <div class="theme-toggle">
             <button id="themeBtn">🌙 Dark</button>
@@ -15,28 +15,33 @@
 
         <div class="display">
             <div class="previous-operand"></div>
-            <div class="current-operand"></div>
+            <div class="current-operand">0</div>   <!-- ✅ added default 0 -->
         </div>
 
         <div class="buttons">
             <button class="clear">AC</button>
             <button class="backspace">⌫</button>
-            <button class="operator">÷</button>
-            <button class="operator">×</button>
+            <button class="sign">+/-</button>
+            <button class="operator">/</button>    <!-- ✅ use / not ÷ -->
+
             <button class="number">7</button>
             <button class="number">8</button>
             <button class="number">9</button>
-            <button class="operator">-</button>
+            <button class="operator">*</button>    <!-- ✅ use * not × -->
+
             <button class="number">4</button>
             <button class="number">5</button>
             <button class="number">6</button>
-            <button class="operator">+</button>
+            <button class="operator">-</button>
+
             <button class="number">1</button>
             <button class="number">2</button>
             <button class="number">3</button>
-            <button class="equals">=</button>
+            <button class="operator">+</button>    <!-- ✅ + is operator -->
+
             <button class="number zero">0</button>
             <button class="number">.</button>
+            <button class="equals">=</button>      <!-- ✅ equals button -->
         </div>
     </div>
     <script src="script.js"></script>

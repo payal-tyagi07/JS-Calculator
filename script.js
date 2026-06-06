@@ -6,9 +6,10 @@ const equalsBtn=document.querySelector(".equals");
 const clearBtn=document.querySelector(".clear");
 const themeBtn=document.querySelector("#themeBtn");
 const backspaceBtn=document.querySelector(".backspace");
+const signBtn = document.querySelector('.sign');
 
 let currentOperand='0';  // number currently being typed
-let previousoperand='';  // previous number before operator
+let previousOperand='';  // previous number before operator
 let operation=null;
 let waitingForNewOperand=false;  // are we starting a new number?
 
@@ -16,7 +17,7 @@ let waitingForNewOperand=false;  // are we starting a new number?
 function updateDisplay()
 {
     currentDisplay.textContent=currentOperand;
-    previousDisplay.textContent=previousoperand +(operation || '');
+    previousDisplay.textContent=previousOperand +(operation || '');
 }
 
 //Appending Numbers
@@ -57,38 +58,37 @@ function chooseOperation(op){
     updateDisplay();
 }
 
-function calculate(){
+function calculate() {
+    // If no operation waiting, do nothing
+    if (operation === null || previousOperand === '') return;
+
+    // If no second number typed, use the first number again
+    let current = currentOperand;
+    if (current === '') current = previousOperand;
+
+    const prev = parseFloat(previousOperand);
+    const curr = parseFloat(current);
+    if (isNaN(prev) || isNaN(curr)) return;
+
     let result;
-    const prev=parseFloat(previousOperand);
-    const current=parseFloat(currentOperand);
-    if(isNaN(prev) || isNaN(current))
-        return;
-    switch(operation)
-    {
-        case '+':
-            result=prev+current;
-            break;
-        case '-':
-            result=prev-current;
-            break;
-        case '*':
-            result=prev*current;
-            break;
+    switch (operation) {
+        case '+': result = prev + curr; break;
+        case '-': result = prev - curr; break;
+        case '*': result = prev * curr; break;
         case '/':
-            if(current === 0)
-            {
+            if (curr === 0) {
                 alert("Cannot divide by zero");
                 return;
             }
-            result=prev/current;
+            result = prev / curr;
             break;
-        default:
-            return;
+        default: return;
     }
-    currentOperand=result.toString();
-    operation=null;
-    previousOperand='';
-    waitingForNewOperand=true;
+
+    currentOperand = result.toString();
+    operation = null;
+    previousOperand = '';
+    waitingForNewOperand = true;
     updateDisplay();
 }
 
@@ -101,6 +101,13 @@ function clear()
     waitingForNewOperand=false;
     updateDisplay();
 }
+
+function toggleSign() {
+            let num = parseFloat(currentOperand);
+            if (isNaN(num)) return;
+            currentOperand = (num * -1).toString();
+            updateDisplay();
+        }
 
 function backspace()
 {
@@ -137,6 +144,7 @@ clearBtn.addEventListener('click',() => {
 backspaceBtn.addEventListener('click',() => {
     backspace();
 });
+
 
 //keyboard support
 document.addEventListener('keydown', (e) => {
@@ -175,4 +183,6 @@ function toggleTheme() {
     }
 }
 themeBtn.addEventListener('click', toggleTheme);
-document.body.classList.add('light'); 
+
+document.body.classList.add('dark');
+themeBtn.textContent = '☀️ Light';
